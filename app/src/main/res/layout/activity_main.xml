@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#0d0d1a"
+    android:padding="48dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="#6b8cff"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Estado del servidor HTTP -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Interfaz web disponible en:"
+        android:textColor="#8080a0"
+        android:textSize="16sp"
+        android:layout_marginBottom="6dp" />
+
+    <TextView
+        android:id="@+id/tv_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Detectando IP..."
+        android:textColor="#e0e0f0"
+        android:textSize="28sp"
+        android:fontFamily="monospace"
+        android:layout_marginBottom="6dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="● Servidor activo"
+        android:textColor="#5fdd7c"
+        android:textSize="14sp"
+        android:layout_marginBottom="24dp" />
+
+    <!-- QR para escanear desde el móvil -->
+    <ImageView
+        android:id="@+id/iv_qr"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:background="#ffffff"
+        android:padding="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="QR" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Escanea para abrir en el móvil"
+        android:textColor="#8080a0"
+        android:textSize="13sp"
+        android:layout_marginBottom="36dp" />
+
+    <!-- Configuración IP del NAS -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="IP DEL SERVIDOR ACESTREAM"
+        android:textColor="#8098ff"
+        android:textSize="13sp"
+        android:letterSpacing="0.08"
+        android:layout_marginBottom="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            android:id="@+id/et_nas_ip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="192.168.1.100"
+            android:inputType="textUri"
+            android:textColor="#e0e0f0"
+            android:textColorHint="#404060"
+            android:textSize="20sp"
+            android:fontFamily="monospace"
+            android:padding="14dp"
+            android:layout_marginEnd="12dp"
+            android:singleLine="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:nextFocusRight="@+id/btn_save_ip" />
+
+        <Button
+            android:id="@+id/btn_save_ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:textColor="#ffffff"
+            android:background="#4a6cf7"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:focusable="true"
+            android:nextFocusLeft="@id/et_nas_ip" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_save_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="14sp"
+        android:minHeight="22dp" />
+
+</LinearLayout>

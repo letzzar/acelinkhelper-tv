@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcelinkHelper TV</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #0d0d1a;
+            color: #e0e0f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #6b8cff;
+            letter-spacing: 0.05em;
+        }
+
+        h1 span { color: #a0b8ff; font-weight: 300; }
+
+        .card {
+            background: #16162a;
+            border: 1px solid #2a2a50;
+            border-radius: 14px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 560px;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #8098ff;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: #0d0d1a;
+            border: 1px solid #2e2e5a;
+            border-radius: 8px;
+            color: #e0e0f0;
+            font-size: 1rem;
+            padding: 0.7rem 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #6b8cff;
+        }
+
+        button {
+            background: #4a6cf7;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.7rem 1.2rem;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+
+        button:hover  { background: #6080ff; }
+        button:active { background: #3a5ae0; }
+
+        .msg {
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            min-height: 1.3rem;
+            transition: color 0.2s;
+        }
+        .ok  { color: #5fdd7c; }
+        .err { color: #ff6060; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Acelink<span>Helper</span> TV</h1>
+    </header>
+
+    <div class="card" style="text-align:center;">
+        <h2>Escanear para abrir en el móvil</h2>
+        <img id="qr-img" src="" alt=""
+             style="width:180px;height:180px;border-radius:10px;background:#fff;padding:6px;" />
+        <p id="qr-url"
+           style="margin-top:0.75rem;font-size:0.85rem;color:#6b8cff;font-family:monospace;word-break:break-all;"></p>
+    </div>
+
+    <div class="card">
+        <h2>Servidor Acestream (NAS)</h2>
+        <div class="input-row">
+            <input id="nas-ip" type="text" placeholder="192.168.1.100" autocomplete="off" />
+            <button onclick="saveIp()">Guardar</button>
+        </div>
+        <div id="ip-msg" class="msg"></div>
+    </div>
+
+    <div class="card">
+        <h2>Reproducir enlace</h2>
+        <div class="input-row">
+            <input id="stream-url" type="text" placeholder="acestream://abc123def456..." autocomplete="off" />
+            <button onclick="play()">&#9654; VLC</button>
+        </div>
+        <div id="play-msg" class="msg"></div>
+    </div>
+
+    <script>
+        (function () {
+            const url = window.location.origin;
+            document.getElementById('qr-url').textContent = url;
+            const img = document.getElementById('qr-img');
+            img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url);
+            img.onerror = function () { this.alt = 'Sin conexión — introduce la URL manualmente'; };
+        })();
+
+        fetch('/config')
+            .then(r => r.json())
+            .then(d => { if (d.nas_ip) document.getElementById('nas-ip').value = d.nas_ip; })
+            .catch(() => {});
+
+        function saveIp() {
+            const ip = document.getElementById('nas-ip').value.trim();
+            const msg = document.getElementById('ip-msg');
+            if (!ip) { show(msg, 'Introduce la IP del servidor', false); return; }
+            post('/save-ip', { nas_ip: ip })
+                .then(d => show(msg, d.ok ? 'IP guardada correctamente' : d.error, d.ok));
+        }
+
+        function play() {
+            const url = document.getElementById('stream-url').value.trim();
+            const msg = document.getElementById('play-msg');
+            if (!url) { show(msg, 'Introduce un enlace acestream://', false); return; }
+            show(msg, 'Enviando...', true);
+            post('/play', { url })
+                .then(d => show(msg, d.ok ? '¡Abriendo VLC!' : d.error, d.ok));
+        }
+
+        function post(path, data) {
+            const body = Object.entries(data)
+                .map(([k, v]) => encodeURIComponent(k) + '=' + encodeURIComponent(v))
+                .join('&');
+            return fetch(path, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body
+            })
+            .then(r => r.json())
+            .catch(() => ({ ok: false, error: 'Error de conexión' }));
+        }
+
+        function show(el, text, ok) {
+            el.textContent = text;
+            el.className = 'msg ' + (ok ? 'ok' : 'err');
+        }
+
+        document.getElementById('stream-url').addEventListener('keydown', e => {
+            if (e.key === 'Enter') play();
+        });
+        document.getElementById('nas-ip').addEventListener('keydown', e => {
+            if (e.key === 'Enter') saveIp();
+        });
+    </script>
+</body>
+</html>

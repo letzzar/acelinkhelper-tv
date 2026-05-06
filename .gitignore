@@ -1,0 +1,13 @@
+.gradle/
+build/
+local.properties
+*.jks
+*.keystore
+.DS_Store
+Thumbs.db
+.claude/
+**/.claude/
+CLAUDE.md
+*.md
+!README.md
+settings.local.json
