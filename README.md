@@ -1,4 +1,4 @@
-# AcelinkHelper TV (Android TV)
+﻿# AcelinkHelper TV (Android TV)
 
 **English** | [Español](#español)
 
@@ -332,4 +332,4 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ## Licencia
 
-MIT © 2026 letzzar
+GNU General Public License v3.0 — ver [LICENSE](LICENSE)
