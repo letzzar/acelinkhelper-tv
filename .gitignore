@@ -11,3 +11,5 @@ CLAUDE.md
 *.md
 !README.md
 settings.local.json
+
+keystore-credentials.txt
