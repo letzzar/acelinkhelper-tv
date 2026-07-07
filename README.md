@@ -14,6 +14,15 @@ An Android TV app that intercepts `acestream://` URLs and plays the converted HT
 - Launches VLC for Android or the default video player with the stream
 - Optimized for TV navigation (D-pad friendly UI)
 
+## Download
+
+Download the latest version from the [releases page](https://github.com/letzzar/acelinkhelper-tv/releases/latest). Both files are the same universal APK — it works on Android TV and regular Android phones/tablets (Android 5.1+):
+
+| Platform | File |
+|---|---|
+| Android TV | [acelinkhelper-tv-v1.0.0.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.0/acelinkhelper-tv-v1.0.0.apk) |
+| Android (phone/tablet) | [acelinkhelper-android-v1.0.0.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.0/acelinkhelper-android-v1.0.0.apk) |
+
 ## Server Setup (Docker)
 
 AcelinkHelper TV is designed to work with the AceStream engine running in **Docker** — typically on a home server or NAS on your network. The app on your Android TV simply points to that address.
@@ -178,6 +187,15 @@ App para Android TV que intercepta URLs `acestream://` y reproduce el stream HTT
 - Convierte el hash de acestream en una URL de stream HTTP
 - Lanza VLC para Android o el reproductor predeterminado con el stream
 - Interfaz optimizada para TV (navegación con D-pad)
+
+## Descarga
+
+Descarga la última versión desde la [página de releases](https://github.com/letzzar/acelinkhelper-tv/releases/latest). Ambos archivos son el mismo APK universal — funciona en Android TV y en móviles/tablets Android (Android 5.1+):
+
+| Plataforma | Archivo |
+|---|---|
+| Android TV | [acelinkhelper-tv-v1.0.0.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.0/acelinkhelper-tv-v1.0.0.apk) |
+| Android (móvil/tablet) | [acelinkhelper-android-v1.0.0.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.0/acelinkhelper-android-v1.0.0.apk) |
 
 ## Configuración del Servidor (Docker)
 
