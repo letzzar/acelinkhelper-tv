@@ -36,11 +36,15 @@ jobs:
         run: gradle assembleRelease
 
       - name: Rename APK
-        run: cp app/build/outputs/apk/release/app-release.apk acelinkhelper-tv-${{ github.ref_name }}.apk
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk acelinkhelper-tv-${{ github.ref_name }}.apk
+          cp app/build/outputs/apk/release/app-release.apk acelinkhelper-android-${{ github.ref_name }}.apk
 
       - name: Upload to release
         uses: softprops/action-gh-release@v2
         with:
-          files: acelinkhelper-tv-${{ github.ref_name }}.apk
+          files: |
+            acelinkhelper-tv-${{ github.ref_name }}.apk
+            acelinkhelper-android-${{ github.ref_name }}.apk
           name: AcelinkHelper TV ${{ github.ref_name }}
           generate_release_notes: true
