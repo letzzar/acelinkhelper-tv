@@ -10,8 +10,8 @@ android {
         applicationId = "com.acelinkhelper.tv"
         minSdk = 22
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.0.6"
+        versionCode = 8
+        versionName = "1.0.7"
     }
 
     signingConfigs {
