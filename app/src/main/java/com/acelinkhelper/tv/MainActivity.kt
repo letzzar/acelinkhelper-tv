@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity() {
 
         val btnBrowser = findViewById<Button>(R.id.btn_browser)
         val btnSave = findViewById<Button>(R.id.btn_save_ip)
-        for (v in listOf<View>(etNasIp, btnSave, btnBrowser)) v.scaleOnFocus()
+        // solo los botones: los campos ocupan casi todo el ancho y al crecer se salían
+        for (v in listOf<View>(btnSave, btnBrowser)) v.scaleOnFocus()
 
         btnBrowser.setOnClickListener {
             startActivity(Intent(this, BrowserActivity::class.java))
