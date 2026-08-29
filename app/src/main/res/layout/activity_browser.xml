@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:clipChildren="false"
         android:padding="32dp">
 
         <TextView
@@ -68,9 +69,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:clipChildren="false"
             android:gravity="center_vertical">
 
             <EditText
+                android:background="@drawable/field_tv"
                 android:id="@+id/et_fav_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -89,6 +92,7 @@
                 android:nextFocusRight="@+id/et_fav_url" />
 
             <EditText
+                android:background="@drawable/field_tv"
                 android:id="@+id/et_fav_url"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -113,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:text="Añadir"
                 android:textColor="#ffffff"
-                android:background="#4a6cf7"
+                android:background="@drawable/btn_tv"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
                 android:focusable="true"

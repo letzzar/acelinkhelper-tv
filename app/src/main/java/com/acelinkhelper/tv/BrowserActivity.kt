@@ -54,7 +54,11 @@ class BrowserActivity : AppCompatActivity() {
             favorites.getOrNull(position)?.let { confirmRemove(it) }
             true
         }
-        findViewById<Button>(R.id.btn_fav_add).setOnClickListener { addFromForm() }
+        val btnAdd = findViewById<Button>(R.id.btn_fav_add)
+        for (v in listOf<View>(btnAdd, findViewById(R.id.et_fav_name), findViewById(R.id.et_fav_url))) {
+            v.scaleOnFocus()
+        }
+        btnAdd.setOnClickListener { addFromForm() }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

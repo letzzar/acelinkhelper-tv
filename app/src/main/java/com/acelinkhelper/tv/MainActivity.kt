@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -63,11 +64,15 @@ class MainActivity : AppCompatActivity() {
             tvMsg.setTextColor(0xFFFF6060.toInt())
         }
 
-        findViewById<Button>(R.id.btn_browser).setOnClickListener {
+        val btnBrowser = findViewById<Button>(R.id.btn_browser)
+        val btnSave = findViewById<Button>(R.id.btn_save_ip)
+        for (v in listOf<View>(etNasIp, btnSave, btnBrowser)) v.scaleOnFocus()
+
+        btnBrowser.setOnClickListener {
             startActivity(Intent(this, BrowserActivity::class.java))
         }
 
-        findViewById<Button>(R.id.btn_save_ip).setOnClickListener {
+        btnSave.setOnClickListener {
             val nasIp = etNasIp.text.toString().trim()
             if (nasIp.isEmpty()) {
                 tvMsg.text = "La IP no puede estar vacía"

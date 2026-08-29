@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0d0d1a"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:clipChildren="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:clipChildren="false"
         android:gravity="center_horizontal"
         android:padding="32dp">
 
@@ -80,10 +82,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:clipChildren="false"
             android:gravity="center_vertical"
             android:layout_marginBottom="6dp">
 
             <EditText
+                android:background="@drawable/field_tv"
                 android:id="@+id/et_nas_ip"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -108,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:text="Guardar"
                 android:textColor="#ffffff"
-                android:background="#4a6cf7"
+                android:background="@drawable/btn_tv"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:focusable="true"
@@ -131,7 +135,7 @@
             android:layout_height="wrap_content"
             android:text="Abrir navegador"
             android:textColor="#ffffff"
-            android:background="#4a6cf7"
+            android:background="@drawable/btn_tv"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
             android:layout_marginTop="10dp"
