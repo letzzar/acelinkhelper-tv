@@ -132,4 +132,11 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <View
+        android:id="@+id/cursor"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/cursor"
+        android:visibility="invisible" />
+
 </FrameLayout>
