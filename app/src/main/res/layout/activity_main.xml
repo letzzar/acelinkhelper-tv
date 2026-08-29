@@ -136,7 +136,11 @@
             android:paddingEnd="32dp"
             android:layout_marginTop="10dp"
             android:focusable="true"
-            android:nextFocusUp="@id/et_nas_ip" />
+            android:nextFocusUp="@id/et_nas_ip">
+
+            <requestFocus />
+
+        </Button>
 
     </LinearLayout>
 

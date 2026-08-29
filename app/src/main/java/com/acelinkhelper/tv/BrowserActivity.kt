@@ -11,10 +11,9 @@ import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
+import android.widget.GridView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -26,7 +25,7 @@ class BrowserActivity : AppCompatActivity() {
     private lateinit var prefs: SharedPreferences
     private lateinit var favoritesPanel: View
     private lateinit var webView: WebView
-    private lateinit var listView: ListView
+    private lateinit var grid: GridView
     private lateinit var emptyMsg: TextView
     private lateinit var addMsg: TextView
     private lateinit var cursor: View
@@ -41,17 +40,17 @@ class BrowserActivity : AppCompatActivity() {
 
         favoritesPanel = findViewById(R.id.panel_favorites)
         webView = findViewById(R.id.web_view)
-        listView = findViewById(R.id.lv_favorites)
+        grid = findViewById(R.id.gv_favorites)
         emptyMsg = findViewById(R.id.tv_favorites_empty)
         addMsg = findViewById(R.id.tv_add_msg)
         cursor = findViewById(R.id.cursor)
 
         setupWebView()
 
-        listView.setOnItemClickListener { _, _, position, _ ->
+        grid.setOnItemClickListener { _, _, position, _ ->
             favorites.getOrNull(position)?.let { openUrl(it.url) }
         }
-        listView.setOnItemLongClickListener { _, _, position, _ ->
+        grid.setOnItemLongClickListener { _, _, position, _ ->
             favorites.getOrNull(position)?.let { confirmRemove(it) }
             true
         }
@@ -118,7 +117,7 @@ class BrowserActivity : AppCompatActivity() {
         webView.visibility = View.GONE
         favoritesPanel.visibility = View.VISIBLE
         refreshFavorites()
-        listView.requestFocus()
+        grid.requestFocus()
     }
 
     private fun addFromForm() {
@@ -225,7 +224,7 @@ class BrowserActivity : AppCompatActivity() {
             .setPositiveButton("Quitar") { _, _ ->
                 removeFavorite(prefs, favorite.url)
                 refreshFavorites()
-                listView.requestFocus()
+                grid.requestFocus()
             }
             .setNegativeButton("Cancelar", null)
             .show()
@@ -233,11 +232,7 @@ class BrowserActivity : AppCompatActivity() {
 
     private fun refreshFavorites() {
         favorites = loadFavorites(prefs)
-        listView.adapter = ArrayAdapter(
-            this,
-            R.layout.item_favorite,
-            favorites.map { it.name }
-        )
+        grid.adapter = FavoriteAdapter(this, favorites)
         emptyMsg.visibility = if (favorites.isEmpty()) View.VISIBLE else View.GONE
     }
 

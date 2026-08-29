@@ -28,16 +28,22 @@
             android:textSize="13sp"
             android:layout_marginBottom="12dp" />
 
-        <ListView
-            android:id="@+id/lv_favorites"
+        <GridView
+            android:id="@+id/gv_favorites"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:divider="#2a2a50"
-            android:dividerHeight="1dp"
-            android:listSelector="#4a6cf7"
+            android:numColumns="4"
+            android:horizontalSpacing="14dp"
+            android:verticalSpacing="14dp"
+            android:listSelector="@drawable/tile_focus"
+            android:drawSelectorOnTop="true"
             android:focusable="true"
-            android:nextFocusDown="@+id/et_fav_name" />
+            android:nextFocusDown="@+id/et_fav_name">
+
+            <requestFocus />
+
+        </GridView>
 
         <TextView
             android:id="@+id/tv_favorites_empty"
@@ -79,7 +85,7 @@
                 android:singleLine="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:nextFocusUp="@id/lv_favorites"
+                android:nextFocusUp="@id/gv_favorites"
                 android:nextFocusRight="@+id/et_fav_url" />
 
             <EditText
