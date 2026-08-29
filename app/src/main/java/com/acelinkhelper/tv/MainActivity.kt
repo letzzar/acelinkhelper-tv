@@ -1,13 +1,9 @@
 package com.acelinkhelper.tv
 
 import android.Manifest
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -17,8 +13,6 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.qrcode.QRCodeWriter
 import java.net.Inet4Address
 import java.net.NetworkInterface
 
@@ -55,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tv_ip).text = serverUrl ?: "Sin conexión de red"
 
         if (serverUrl != null) {
-            val qr = generateQr(serverUrl, 400)
+            val qr = generateQrBitmap(serverUrl, 400)
             if (qr != null) findViewById<ImageView>(R.id.iv_qr).setImageBitmap(qr)
         }
 
@@ -67,6 +61,10 @@ class MainActivity : AppCompatActivity() {
         if (errorMsg != null) {
             tvMsg.text = errorMsg
             tvMsg.setTextColor(0xFFFF6060.toInt())
+        }
+
+        findViewById<Button>(R.id.btn_browser).setOnClickListener {
+            startActivity(Intent(this, BrowserActivity::class.java))
         }
 
         findViewById<Button>(R.id.btn_save_ip).setOnClickListener {
@@ -84,8 +82,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleAcestreamIntent(intent: Intent) {
         val raw = intent.data?.toString() ?: run { finish(); return }
-        val id = raw.removePrefix("acestream://").trim()
-        if (id.isEmpty()) { finish(); return }
+        val id = parseAcestreamId(raw) ?: run {
+            showConfigUi(errorMsg = "Enlace acestream inválido")
+            return
+        }
 
         val prefs = getSharedPreferences("acelink_prefs", Context.MODE_PRIVATE)
         val nasIp = prefs.getString("nas_ip", null)?.takeIf { it.isNotBlank() }
@@ -95,35 +95,12 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val streamUrl = "http://$nasIp:6878/ace/getstream?id=$id"
-        if (!launchVlc(streamUrl)) {
+        val streamUrl = acestreamUrl(nasIp, id)
+        if (!launchVlc(this, streamUrl)) {
             showConfigUi(errorMsg = "VLC no está instalado")
             return
         }
         finish()
-    }
-
-    private fun launchVlc(streamUrl: String): Boolean {
-        val uri = Uri.parse(streamUrl)
-        for (pkg in listOf("org.videolan.vlc", "org.videolan.vlc.betav3")) {
-            try {
-                startActivity(Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(uri, "video/*")
-                    setPackage(pkg)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                })
-                return true
-            } catch (_: ActivityNotFoundException) {}
-        }
-        return try {
-            startActivity(Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(uri, "video/*")
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            })
-            true
-        } catch (_: ActivityNotFoundException) {
-            false
-        }
     }
 
     private fun requestPermissionsIfNeeded() {
@@ -142,16 +119,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             startService(intent)
         }
-    }
-
-    private fun generateQr(content: String, size: Int): Bitmap? {
-        return try {
-            val matrix = QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, size, size)
-            val bmp = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565)
-            for (x in 0 until size) for (y in 0 until size)
-                bmp.setPixel(x, y, if (matrix[x, y]) Color.BLACK else Color.WHITE)
-            bmp
-        } catch (_: Exception) { null }
     }
 
     private fun getDeviceIp(): String? {

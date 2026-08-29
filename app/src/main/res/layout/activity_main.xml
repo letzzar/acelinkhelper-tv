@@ -118,4 +118,17 @@
         android:textSize="14sp"
         android:minHeight="22dp" />
 
+    <Button
+        android:id="@+id/btn_browser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Abrir navegador"
+        android:textColor="#ffffff"
+        android:background="#4a6cf7"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:focusable="true"
+        android:nextFocusUp="@id/et_nas_ip" />
+
 </LinearLayout>

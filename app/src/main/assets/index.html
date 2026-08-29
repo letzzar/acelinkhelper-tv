@@ -95,6 +95,37 @@
         }
         .ok  { color: #5fdd7c; }
         .err { color: #ff6060; }
+
+        .fav-list { list-style: none; margin-bottom: 1rem; }
+
+        .fav-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #2a2a50;
+        }
+
+        .fav-list li:last-child { border-bottom: none; }
+
+        .fav-name { font-weight: 600; }
+
+        .fav-url {
+            flex: 1;
+            color: #6b8cff;
+            font-family: monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+        }
+
+        .fav-del {
+            background: #3a2a45;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+        }
+        .fav-del:hover { background: #5a3a55; }
+
+        .empty { color: #8080a0; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -120,6 +151,17 @@
     </div>
 
     <div class="card">
+        <h2>Favoritos del navegador de la TV</h2>
+        <ul id="fav-list" class="fav-list"></ul>
+        <div class="input-row">
+            <input id="fav-name" type="text" placeholder="Nombre" autocomplete="off" style="flex:1;" />
+            <input id="fav-url" type="text" placeholder="ejemplo.com" autocomplete="off" style="flex:2;" />
+            <button onclick="addFav()">Añadir</button>
+        </div>
+        <div id="fav-msg" class="msg"></div>
+    </div>
+
+    <div class="card">
         <h2>Reproducir enlace</h2>
         <div class="input-row">
             <input id="stream-url" type="text" placeholder="acestream://abc123def456..." autocomplete="off" />
@@ -130,11 +172,10 @@
 
     <script>
         (function () {
-            const url = window.location.origin;
-            document.getElementById('qr-url').textContent = url;
+            document.getElementById('qr-url').textContent = window.location.origin;
             const img = document.getElementById('qr-img');
-            img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url);
-            img.onerror = function () { this.alt = 'Sin conexión — introduce la URL manualmente'; };
+            img.src = '/qr.png';
+            img.onerror = function () { this.alt = 'No se pudo generar el QR — introduce la URL manualmente'; };
         })();
 
         fetch('/config')
@@ -157,6 +198,62 @@
             show(msg, 'Enviando...', true);
             post('/play', { url })
                 .then(d => show(msg, d.ok ? '¡Abriendo VLC!' : d.error, d.ok));
+        }
+
+        function loadFavs() {
+            fetch('/favorites')
+                .then(r => r.json())
+                .then(renderFavs)
+                .catch(() => {});
+        }
+
+        function renderFavs(favs) {
+            const ul = document.getElementById('fav-list');
+            ul.innerHTML = '';
+            if (!favs.length) {
+                const li = document.createElement('li');
+                li.className = 'empty';
+                li.textContent = 'Todavía no hay favoritos.';
+                ul.appendChild(li);
+                return;
+            }
+            favs.forEach(f => {
+                const li = document.createElement('li');
+                const name = document.createElement('span');
+                name.className = 'fav-name';
+                name.textContent = f.name;
+                const url = document.createElement('span');
+                url.className = 'fav-url';
+                url.textContent = f.url;
+                const del = document.createElement('button');
+                del.className = 'fav-del';
+                del.textContent = 'Quitar';
+                del.onclick = () => removeFav(f.url);
+                li.append(name, url, del);
+                ul.appendChild(li);
+            });
+        }
+
+        function addFav() {
+            const url = document.getElementById('fav-url').value.trim();
+            const name = document.getElementById('fav-name').value.trim();
+            const msg = document.getElementById('fav-msg');
+            if (!url) { show(msg, 'Introduce la dirección de la web', false); return; }
+            post('/fav-add', { name, url }).then(d => {
+                show(msg, d.ok ? 'Favorito añadido' : d.error, d.ok);
+                if (d.ok) {
+                    document.getElementById('fav-url').value = '';
+                    document.getElementById('fav-name').value = '';
+                    loadFavs();
+                }
+            });
+        }
+
+        function removeFav(url) {
+            post('/fav-remove', { url }).then(d => {
+                if (d.ok) loadFavs();
+                else show(document.getElementById('fav-msg'), d.error, false);
+            });
         }
 
         function post(path, data) {
@@ -183,6 +280,11 @@
         document.getElementById('nas-ip').addEventListener('keydown', e => {
             if (e.key === 'Enter') saveIp();
         });
+        document.getElementById('fav-url').addEventListener('keydown', e => {
+            if (e.key === 'Enter') addFav();
+        });
+
+        loadFavs();
     </script>
 </body>
 </html>
