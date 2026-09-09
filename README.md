@@ -20,8 +20,8 @@ Download the latest version from the [releases page](https://github.com/letzzar/
 
 | Platform | File |
 |---|---|
-| Android TV | [acelinkhelper-tv-v1.0.0.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.0/acelinkhelper-tv-v1.0.0.apk) |
-| Android (phone/tablet) | [acelinkhelper-android-v1.0.0.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.0/acelinkhelper-android-v1.0.0.apk) |
+| Android TV | [acelinkhelper-tv-v1.0.7.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.7/acelinkhelper-tv-v1.0.7.apk) |
+| Android (phone/tablet) | [acelinkhelper-android-v1.0.7.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.7/acelinkhelper-android-v1.0.7.apk) |
 
 ## Server Setup (Docker)
 
@@ -194,8 +194,8 @@ Descarga la última versión desde la [página de releases](https://github.com/l
 
 | Plataforma | Archivo |
 |---|---|
-| Android TV | [acelinkhelper-tv-v1.0.0.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.0/acelinkhelper-tv-v1.0.0.apk) |
-| Android (móvil/tablet) | [acelinkhelper-android-v1.0.0.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.0/acelinkhelper-android-v1.0.0.apk) |
+| Android TV | [acelinkhelper-tv-v1.0.7.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.7/acelinkhelper-tv-v1.0.7.apk) |
+| Android (móvil/tablet) | [acelinkhelper-android-v1.0.7.apk](https://github.com/letzzar/acelinkhelper-tv/releases/download/v1.0.7/acelinkhelper-android-v1.0.7.apk) |
 
 ## Configuración del Servidor (Docker)
 
